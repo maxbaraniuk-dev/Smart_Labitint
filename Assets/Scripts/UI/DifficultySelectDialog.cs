@@ -1,0 +1,45 @@
+using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using Events;
+using Game;
+using UI.Core;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace UI
+{
+    public class DifficultySelectDialog : BaseView
+    {
+        [SerializeField] private Button playButton;
+        [SerializeField] private Toggle easyToggle;
+        [SerializeField] private Toggle mediumToggle;
+        [SerializeField] private Toggle hardToggle;
+
+        private readonly Dictionary<Toggle, DifficultyLevel> _difficultyToggles = new();
+        
+        private DifficultyLevel _difficultyLevel;
+        
+        public override UniTask Show()
+        {
+            _difficultyToggles.Add(easyToggle, DifficultyLevel.Easy);
+            _difficultyToggles.Add(mediumToggle, DifficultyLevel.Medium);
+            _difficultyToggles.Add(hardToggle, DifficultyLevel.Hard);
+            
+            foreach (var activeToggle in _difficultyToggles.Keys)
+                activeToggle.onValueChanged.AddListener(_ => OnToggleValueChanged(activeToggle));
+            
+            playButton.onClick.AddListener(OnStartGame);
+            return base.Show();
+        }
+
+        private void OnToggleValueChanged(Toggle toggle)
+        {
+            _difficultyLevel = _difficultyToggles[toggle];
+        }
+        
+        private void OnStartGame()
+        {
+            EventsMap.Dispatch(UIEvents.OnStartNewGame, _difficultyLevel);
+        }
+    }
+}
