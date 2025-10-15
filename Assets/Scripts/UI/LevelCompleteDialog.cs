@@ -1,4 +1,3 @@
-using System;
 using Events;
 using Game;
 using TMPro;
@@ -13,7 +12,6 @@ namespace UI
     {
         [SerializeField] TMP_Text timeText;
         [SerializeField] TMP_Text distanceText;
-        [SerializeField] TMP_Text levelText;
         [SerializeField] Button confirmButton;
 
         public override void Show(LevelResultData viewModel)

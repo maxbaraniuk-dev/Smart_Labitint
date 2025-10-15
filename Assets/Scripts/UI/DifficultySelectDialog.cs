@@ -27,6 +27,7 @@ namespace UI
             foreach (var activeToggle in _difficultyToggles.Keys)
                 activeToggle.onValueChanged.AddListener(_ => OnToggleValueChanged(activeToggle));
             
+            mediumToggle.isOn = true;
             playButton.onClick.AddListener(OnStartGame);
         }
 

@@ -31,7 +31,7 @@ namespace AppStates
         
         private void OnPrepareNewGame()
         {
-            Context.GetSystem<UISystem>().CloseView<LobbyBackground>();
+            Context.GetSystem<UISystem>().CloseView<LobbyMainDialog>();
             Context.GetSystem<UISystem>().ShowView<DifficultySelectDialog>();
         }
         
