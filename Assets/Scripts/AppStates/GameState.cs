@@ -1,23 +1,34 @@
+using Events;
 using Game;
 using Infrastructure;
+using UI;
 
 namespace AppStates
 {
     public class GameState : IPayLoadedState<DifficultyLevel>
     {
+        private DifficultyLevel _difficultyLevel;
         public void SetPayload(DifficultyLevel payload)
         {
-            throw new System.NotImplementedException();
+            _difficultyLevel = payload;
         }
 
         public void Enter()
         {
-            throw new System.NotImplementedException();
+            Context.GetSystem<UISystem>().ShowView<GameUI>();
+            Context.GetSystem<GameSystem>().StartNewGame(_difficultyLevel);
+            EventsMap.Subscribe(UIEvents.OnBackToMenu, OnBackToMenu);
+        }
+
+        private void OnBackToMenu()
+        {
+            Context.AppStateMachine.Enter<LobbyState>();
         }
 
         public void Exit()
         {
-            throw new System.NotImplementedException();
+            Context.GetSystem<GameSystem>().ExitGame();
+            EventsMap.Unsubscribe(UIEvents.OnBackToMenu, OnBackToMenu);
         }
     }
 }

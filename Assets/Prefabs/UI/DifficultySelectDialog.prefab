@@ -282,7 +282,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73161fec18d3441ab2acab5800a2f747, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UI.DifficultySelectDialog
-  layer: 2
+  layer: 1
   playButton: {fileID: 6706549039623031593}
   easyToggle: {fileID: 5667447537650796117}
   mediumToggle: {fileID: 9075351530240322914}

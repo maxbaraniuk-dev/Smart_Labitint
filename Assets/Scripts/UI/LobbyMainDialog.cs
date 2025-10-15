@@ -1,4 +1,3 @@
-using Cysharp.Threading.Tasks;
 using Events;
 using UI.Core;
 using UnityEngine;
@@ -12,18 +11,17 @@ namespace UI
         [SerializeField] Button savesButton;
         [SerializeField] Button leaderboardButton;
 
-        public override UniTask Show()
+        public override void Show()
         {
-            playButton.onClick.AddListener(() => EventsMap.Dispatch(UIEvents.OnPrepareNewGame));
+            playButton.onClick.AddListener(OnPlayButton);
             savesButton.onClick.AddListener(() => EventsMap.Dispatch(UIEvents.OnShowSaves));
             leaderboardButton.onClick.AddListener(() => EventsMap.Dispatch(UIEvents.OnShowResults));
-            return base.Show();
         }
 
-        public override UniTask Close()
+        private void OnPlayButton()
         {
-            
-            return base.Close();
+            EventsMap.Dispatch(UIEvents.OnPrepareNewGame);
+            Close();
         }
     }
 }

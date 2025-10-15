@@ -1,4 +1,4 @@
-using Cysharp.Threading.Tasks;
+using Events;
 using UnityEngine;
 
 namespace UI.Core
@@ -9,19 +9,23 @@ namespace UI.Core
 
         public ViewLayer Layer => layer;
 
-        public virtual UniTask Show()
+        public virtual void Show()
         {
-            return UniTask.CompletedTask;
         }
 
-        public virtual UniTask Show<T>(T viewModel)
+        public virtual void Show<T>(T viewModel)
         {
-            return UniTask.CompletedTask;
+        }
+        
+        public void Close()
+        {
+            CloseInternal();
+            EventsMap.Dispatch(UIEvents.OnCloseView, this);
         }
 
-        public virtual UniTask Close()
+        protected virtual void CloseInternal()
         {
-            return UniTask.CompletedTask;
         }
+
     }
 }

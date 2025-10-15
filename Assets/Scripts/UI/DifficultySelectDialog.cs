@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
 using Events;
 using Game;
 using UI.Core;
@@ -19,7 +18,7 @@ namespace UI
         
         private DifficultyLevel _difficultyLevel;
         
-        public override UniTask Show()
+        public override void Show()
         {
             _difficultyToggles.Add(easyToggle, DifficultyLevel.Easy);
             _difficultyToggles.Add(mediumToggle, DifficultyLevel.Medium);
@@ -29,7 +28,6 @@ namespace UI
                 activeToggle.onValueChanged.AddListener(_ => OnToggleValueChanged(activeToggle));
             
             playButton.onClick.AddListener(OnStartGame);
-            return base.Show();
         }
 
         private void OnToggleValueChanged(Toggle toggle)
@@ -40,6 +38,7 @@ namespace UI
         private void OnStartGame()
         {
             EventsMap.Dispatch(UIEvents.OnStartNewGame, _difficultyLevel);
+            Close();
         }
     }
 }
