@@ -12,6 +12,7 @@ namespace Game
         public MazeData hardMazeData;
         
         public PlayerController playerControllerPrefab;
+        public GameObject gameBackground;
         
         public GameObject wallPrefab;
         public GameObject pathPrefab;

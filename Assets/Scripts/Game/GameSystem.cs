@@ -13,6 +13,7 @@ namespace Game
         [SerializeField] private GameConfig gameConfig;
         
         private GameObject _maze;
+        private GameObject _gameBackground;
         private PlayerController _playerController;
         private bool _isGameStarted;
         
@@ -39,6 +40,7 @@ namespace Game
             _maze = BuildMaze(mazeData, gameConfig.wallPrefab, gameConfig.pathPrefab, gameConfig.exitPrefab);
             var spawnPosition = MazeGenerator.FindNearestToCenter(mazeData);
             _playerController = Instantiate(gameConfig.playerControllerPrefab, new Vector3(spawnPosition.X, spawnPosition.Y, 0), Quaternion.identity);
+            _gameBackground = Instantiate(gameConfig.gameBackground);
             _isGameStarted = true;
         }
 
@@ -48,6 +50,7 @@ namespace Game
             _isGameStarted = false;
             Destroy(_maze);
             Destroy(_playerController.gameObject);
+            Destroy(_gameBackground);
         }
 
         private void Update()
