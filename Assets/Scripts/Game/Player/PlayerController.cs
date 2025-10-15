@@ -52,7 +52,6 @@ namespace Game.Player
 
         public void PlayFinishAnimation()
         {
-            Debug.Break();
             finishAnimation.Play();
         }
     }

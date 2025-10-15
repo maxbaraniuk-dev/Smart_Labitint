@@ -53,18 +53,6 @@ namespace UI
             view.Close();
         }
 
-        // public async UniTask CloseViewAsync<T>() where T : BaseView
-        // {
-        //     var view = _openedViews.FirstOrDefault(view => view is T);
-        //     if (view == null)
-        //     {
-        //         _log.Warning(()=> $"There is no opened view with type {typeof(T)}");
-        //         return;
-        //     }
-        //     
-        //     await view.Close();
-        // }
-
         private void OnViewClosedEventListener(BaseView view)
         {
              _openedViews.Remove(view);

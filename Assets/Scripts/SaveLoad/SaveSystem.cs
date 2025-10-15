@@ -1,6 +1,7 @@
 using System.Collections.Generic;
-using Game;
 using Game.Level;
+using Infrastructure;
+using Logs;
 using UnityEngine;
 
 namespace SaveLoad
@@ -8,13 +9,13 @@ namespace SaveLoad
     public class SaveSystem : MonoBehaviour, ISaveSystem
     {
         private const string LevelsDataKey = "levels";
+
         public void Initialize()
         {
+            Context.GetSystem<ILog>().Debug(() => "SaveSystem initialized");
         }
         
-        public void Dispose()
-        {
-        }
+        public void Dispose() { }
 
         public void SaveCompletedLevel(LevelResultData levelResult)
         {

@@ -1,3 +1,4 @@
+using Game.Level;
 using Game.Maze;
 using Game.Player;
 using UnityEngine;

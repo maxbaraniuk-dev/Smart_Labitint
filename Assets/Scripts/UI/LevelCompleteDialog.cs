@@ -1,5 +1,5 @@
 using Events;
-using Game;
+using Game.Level;
 using TMPro;
 using UI.Core;
 using UnityEngine;

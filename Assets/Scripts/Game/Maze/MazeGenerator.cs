@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Numerics;
+using Infrastructure;
+using Logs;
 
 namespace Game.Maze
 {
@@ -97,39 +99,45 @@ namespace Game.Maze
             }
 
             // Shuffle candidates
-            for (int i = candidates.Count - 1; i > 0; i--)
+            for (var i = candidates.Count - 1; i > 0; i--)
             {
                 int j = rand.Next(i + 1);
                 (candidates[i], candidates[j]) = (candidates[j], candidates[i]);
             }
 
-            int toOpen = Math.Min(requested, candidates.Count);
-            for (int i = 0; i < toOpen; i++)
+            var toOpen = Math.Min(requested, candidates.Count);
+            for (var i = 0; i < toOpen; i++)
             {
                 var (x, y) = candidates[i];
                 grid[x, y] = 2; // mark as exit
             }
 
             // Ensure at least one exit if requested but none possible: try force-open near a path
-            if (requested > 0 && toOpen == 0)
+            if (requested <= 0 || toOpen != 0) 
+                return;
+            
+            // Search first path on inner ring and open the nearest border cell
+            for (int x = 1; x < width - 1; x++)
             {
-                // Search first path on inner ring and open the nearest border cell
-                for (int x = 1; x < width - 1; x++)
-                {
-                    if (grid[x, 1] == 1) { grid[x, 0] = 2; return; }
-                    if (grid[x, height - 2] == 1) { grid[x, height - 1] = 2; return; }
-                }
-                for (int y = 1; y < height - 1; y++)
-                {
-                    if (grid[1, y] == 1) { grid[0, y] = 2; return; }
-                    if (grid[width - 2, y] == 1) { grid[width - 1, y] = 2; return; }
-                }
+                if (grid[x, 1] == 1) { grid[x, 0] = 2; return; }
+                if (grid[x, height - 2] == 1) { grid[x, height - 1] = 2; return; }
             }
+            for (int y = 1; y < height - 1; y++)
+            {
+                if (grid[1, y] == 1) { grid[0, y] = 2; return; }
+                if (grid[width - 2, y] == 1) { grid[width - 1, y] = 2; return; }
+            }
+            
         }
         
         public static Vector2 FindNearestToCenter(int[,] grid, int targetValue = 1)
         {
-            if (grid == null) return Vector2.Zero;
+            if (grid == null)
+            {
+                Context.GetSystem<ILog>().Error(() => "Grid is null");
+                return Vector2.Zero;
+            }
+            
             int width = grid.GetLength(0);
             int height = grid.GetLength(1);
             if (width <= 0 || height <= 0) return Vector2.Zero;

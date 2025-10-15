@@ -2,7 +2,7 @@ using System;
 
 namespace Utils
 {
-    public class StringUtils
+    public static class StringUtils
     {
         public static string FormatDistance(float distance)
         {

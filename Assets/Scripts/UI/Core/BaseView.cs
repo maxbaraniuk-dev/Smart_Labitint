@@ -9,9 +9,7 @@ namespace UI.Core
 
         public ViewLayer Layer => layer;
 
-        public virtual void Show()
-        {
-        }
+        public virtual void Show() { }
         
         public void Close()
         {
@@ -19,9 +17,6 @@ namespace UI.Core
             EventsMap.Dispatch(UIEvents.OnCloseView, this);
         }
 
-        protected virtual void CloseInternal()
-        {
-        }
-
+        protected virtual void CloseInternal() { }
     }
 }

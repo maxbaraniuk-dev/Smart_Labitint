@@ -1,3 +1,5 @@
+using Infrastructure;
+using Logs;
 using UnityEngine;
 
 namespace SaveLoad
@@ -12,7 +14,18 @@ namespace SaveLoad
         
         public static T Load<T>(string key)
         {
+            if (!PlayerPrefs.HasKey(key))
+            {
+                Context.GetSystem<ILog>().Debug(() => $"Key {key} not found");
+                return default;
+            }
+
             var json = PlayerPrefs.GetString(key);
+            
+            var data = JsonUtility.FromJson<T>(json);
+            if (data == null)
+                Context.GetSystem<ILog>().Error(() => $"Failed to load {key}");
+            
             return JsonUtility.FromJson<T>(json);
         }
     }

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Events;
-using Game;
+using Game.Level;
 using UI.Core;
 using UnityEngine;
 using UnityEngine.UI;

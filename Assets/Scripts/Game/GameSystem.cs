@@ -1,8 +1,10 @@
 using System.Collections;
 using Events;
+using Game.Level;
 using Game.Maze;
 using Game.Player;
 using Infrastructure;
+using Logs;
 using SaveLoad;
 using UI;
 using UnityEngine;
@@ -20,16 +22,13 @@ namespace Game
         
         private float _passedTime;
         private DifficultyLevel _difficultyLevel;
-            
+
         public void Initialize()
         {
-            
+            Context.GetSystem<ILog>().Debug(() => "GameSystem initialized");
         }
         
-        public void Dispose()
-        {
-
-        }
+        public void Dispose() { }
 
         public void StartNewGame(DifficultyLevel difficultyLevel)
         {
