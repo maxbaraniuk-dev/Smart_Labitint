@@ -15,8 +15,8 @@ namespace AppStates
 
         public void Enter()
         {
-            Context.GetSystem<UISystem>().ShowView<GameUI>();
-            Context.GetSystem<GameSystem>().StartNewGame(_difficultyLevel);
+            Context.GetSystem<IUISystem>().ShowView<GameUI>();
+            Context.GetSystem<IGameSystem>().StartNewGame(_difficultyLevel);
             EventsMap.Subscribe(UIEvents.OnBackToMenu, OnBackToMenu);
         }
 
@@ -27,7 +27,7 @@ namespace AppStates
 
         public void Exit()
         {
-            Context.GetSystem<GameSystem>().ExitGame();
+            Context.GetSystem<IGameSystem>().ExitGame();
             EventsMap.Unsubscribe(UIEvents.OnBackToMenu, OnBackToMenu);
         }
     }

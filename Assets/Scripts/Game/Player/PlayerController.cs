@@ -9,7 +9,7 @@ namespace Game.Player
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] private float moveSpeed = 1f;
-        
+        [SerializeField] private ParticleSystem finishAnimation;
         private Rigidbody2D _character;
         private SpriteRenderer _spriteRenderer;
         private Vector2 _moveInput;
@@ -49,5 +49,11 @@ namespace Game.Player
         }
         
         public float GetPassedDistance() => _passedDistance;
+
+        public void PlayFinishAnimation()
+        {
+            Debug.Break();
+            finishAnimation.Play();
+        }
     }
 }

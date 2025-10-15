@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
-//using Cysharp.Threading.Tasks;
 using Events;
+using Infrastructure;
 using Logs;
 using UI.Core;
 using UnityEngine;
 
-namespace Infrastructure
+namespace UI
 {
     public class UISystem : MonoBehaviour, IUISystem
     {
@@ -40,14 +40,6 @@ namespace Infrastructure
             view.Show(viewModel);
             return view;
         }
-        
-        // public async UniTask<T> ShowViewAsync<T, Tp>(Tp viewData, Transform parent = null) where T : BaseDataView<Tp>
-        // {
-        //     var view = CreateView<T>(parent);
-        //     view.SetDataContext(viewData);
-        //     await view.Show(viewData);
-        //     return view;
-        // }
 
         public void CloseView<T>() where T : BaseView
         {

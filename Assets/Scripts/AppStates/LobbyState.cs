@@ -11,8 +11,8 @@ namespace AppStates
     {
         public void Enter()
         {
-            Context.GetSystem<UISystem>().ShowView<LobbyBackground>();
-            Context.GetSystem<UISystem>().ShowView<LobbyMainDialog>();
+            Context.GetSystem<IUISystem>().ShowView<LobbyBackground>();
+            Context.GetSystem<IUISystem>().ShowView<LobbyMainDialog>();
             
             EventsMap.Subscribe(UIEvents.OnPrepareNewGame, OnPrepareNewGame);
             EventsMap.Subscribe(UIEvents.OnShowResults, OnShowResults);
@@ -22,7 +22,7 @@ namespace AppStates
 
         public void Exit()
         {
-            Context.GetSystem<UISystem>().CloseView<LobbyBackground>();
+            Context.GetSystem<IUISystem>().CloseView<LobbyBackground>();
             EventsMap.Unsubscribe(UIEvents.OnPrepareNewGame, OnPrepareNewGame);
             EventsMap.Unsubscribe(UIEvents.OnShowResults, OnShowResults);
             
@@ -31,14 +31,14 @@ namespace AppStates
         
         private void OnPrepareNewGame()
         {
-            Context.GetSystem<UISystem>().CloseView<LobbyMainDialog>();
-            Context.GetSystem<UISystem>().ShowView<DifficultySelectDialog>();
+            Context.GetSystem<IUISystem>().CloseView<LobbyMainDialog>();
+            Context.GetSystem<IUISystem>().ShowView<DifficultySelectDialog>();
         }
         
         private void OnShowResults()
         {
-            var achievements = Context.GetSystem<SaveSystem>().LoadLevelsStat();
-            Context.GetSystem<UISystem>().ShowView<AchievementsDialog, AchievementsData>(achievements);
+            var achievements = Context.GetSystem<ISaveSystem>().LoadLevelsStat();
+            Context.GetSystem<IUISystem>().ShowView<AchievementsDialog, AchievementsData>(achievements);
         }
         
         

@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using Game;
 using Game.Level;
-using Infrastructure;
 using UnityEngine;
 
 namespace SaveLoad
 {
-    public class SaveSystem : MonoBehaviour, ISystem
+    public class SaveSystem : MonoBehaviour, ISaveSystem
     {
         private const string LevelsDataKey = "levels";
         public void Initialize()

@@ -1,3 +1,4 @@
+using System.Collections;
 using Events;
 using Game.Maze;
 using Game.Player;
@@ -8,7 +9,7 @@ using UnityEngine;
 
 namespace Game
 {
-    public class GameSystem : MonoBehaviour, ISystem
+    public class GameSystem : MonoBehaviour, IGameSystem
     {
         [SerializeField] private GameConfig gameConfig;
         
@@ -64,7 +65,14 @@ namespace Game
 
         private void OnTargetReached()
         {
-            Context.GetSystem<UISystem>().CloseView<GameUI>();
+            StartCoroutine(CompleteGame());
+        }
+
+        IEnumerator CompleteGame()
+        {
+            Context.GetSystem<IUISystem>().CloseView<GameUI>();
+            _playerController.PlayFinishAnimation();
+            yield return new WaitForSeconds(5);
             _playerController.gameObject.SetActive(false);
             var levelResultData = new LevelResultData
             {
@@ -72,10 +80,10 @@ namespace Game
                 time = _passedTime,
                 distance = _playerController.GetPassedDistance()
             };
-            Context.GetSystem<SaveSystem>().SaveCompletedLevel(levelResultData);
-            Context.GetSystem<UISystem>().ShowView<LevelCompleteDialog, LevelResultData>(levelResultData);
+            Context.GetSystem<ISaveSystem>().SaveCompletedLevel(levelResultData);
+            Context.GetSystem<IUISystem>().ShowView<LevelCompleteDialog, LevelResultData>(levelResultData);
         }
-        
+
         private GameObject BuildMaze(int[,] mazeData, GameObject wallPrefab, GameObject pathPrefab, GameObject exitPrefab)
         {
             var root = new GameObject("Maze");

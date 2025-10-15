@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: GameConfig
   m_EditorClassIdentifier: Assembly-CSharp::Game.GameConfig
   easyMazeData:
-    exitCount: 2
-    mazeWidth: 11
-    mazeHeight: 11
+    exitCount: 1
+    mazeWidth: 10
+    mazeHeight: 10
   mediumMazeData:
     exitCount: 2
     mazeWidth: 30
