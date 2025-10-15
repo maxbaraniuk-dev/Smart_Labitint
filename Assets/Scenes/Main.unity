@@ -440,6 +440,7 @@ GameObject:
   - component: {fileID: 2020784361}
   - component: {fileID: 2020784360}
   - component: {fileID: 2020784362}
+  - component: {fileID: 2020784363}
   m_Layer: 0
   m_Name: AppContext
   m_TagString: Untagged
@@ -513,7 +514,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game.GameSystem
   gameConfig: {fileID: 11400000, guid: 0922535a7b9b342c08f187c6bd64859c, type: 2}
-  playerControllerPrefab: {fileID: 7711773320052191753, guid: 4827d1968a3b84594899748e7f4aeb61, type: 3}
+--- !u!114 &2020784363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2020784357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b7a0c5dcd40432c8e5b160364e72f7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveLoad.SaveSystem
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

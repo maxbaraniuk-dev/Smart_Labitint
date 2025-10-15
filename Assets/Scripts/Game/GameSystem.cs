@@ -2,6 +2,7 @@ using Events;
 using Game.Maze;
 using Game.Player;
 using Infrastructure;
+using SaveLoad;
 using UI;
 using UnityEngine;
 
@@ -68,6 +69,7 @@ namespace Game
                 time = _passedTime,
                 distance = _playerController.GetPassedDistance()
             };
+            Context.GetSystem<SaveSystem>().SaveCompletedLevel(levelResultData);
             Context.GetSystem<UISystem>().ShowView<LevelCompleteDialog, LevelResultData>(levelResultData);
         }
         

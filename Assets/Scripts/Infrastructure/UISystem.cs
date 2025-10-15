@@ -37,7 +37,6 @@ namespace Infrastructure
         public T ShowView<T, Tp>(Tp viewModel, Transform parent = null) where T : BaseDataView<Tp>
         {
             var view = CreateView<T>(parent);
-            view.SetDataContext(viewModel);
             view.Show(viewModel);
             return view;
         }

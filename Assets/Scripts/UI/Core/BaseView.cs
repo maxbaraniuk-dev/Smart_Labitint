@@ -12,10 +12,6 @@ namespace UI.Core
         public virtual void Show()
         {
         }
-
-        public virtual void Show<T>(T viewModel)
-        {
-        }
         
         public void Close()
         {

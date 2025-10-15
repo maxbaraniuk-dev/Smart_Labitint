@@ -3,6 +3,7 @@ using Events;
 using TMPro;
 using UI.Core;
 using UnityEngine;
+using Utils;
 
 namespace UI
 {
@@ -25,12 +26,12 @@ namespace UI
 
         private void PassedDistanceUpdateListener(float distance)
         {
-            distanceText.text = $"{distance:F1}m";
+            distanceText.text = StringUtils.FormatDistance(distance);
         }
         
         private void TimeUpdateListener(float time)
         {
-            timeText.text = $"{TimeSpan.FromSeconds(time):mm\\:ss}";
+            timeText.text = StringUtils.FormatTime(time);
         }
     }
 }

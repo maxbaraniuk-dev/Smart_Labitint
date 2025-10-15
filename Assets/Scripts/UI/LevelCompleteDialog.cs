@@ -5,6 +5,7 @@ using TMPro;
 using UI.Core;
 using UnityEngine;
 using UnityEngine.UI;
+using Utils;
 
 namespace UI
 {
@@ -15,13 +16,11 @@ namespace UI
         [SerializeField] TMP_Text levelText;
         [SerializeField] Button confirmButton;
 
-        public override void Show<T>(T viewModel)
+        public override void Show(LevelResultData viewModel)
         {
-            base.Show(viewModel);
-            timeText.text = $"{TimeSpan.FromSeconds(ViewModel.time):mm\\:ss}";
-            distanceText.text = $"{ViewModel.distance:F1}m";
+            timeText.text = StringUtils.FormatTime(viewModel.time);
+            distanceText.text = StringUtils.FormatDistance(viewModel.distance);
             confirmButton.onClick.AddListener(OnConfirm);
-            //levelText.text = ViewModel.
         }
 
         private void OnConfirm()
