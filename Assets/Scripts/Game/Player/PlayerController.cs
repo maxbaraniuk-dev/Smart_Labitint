@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using Events;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -10,12 +12,16 @@ namespace Game.Player
     {
         [SerializeField] private float moveSpeed = 1f;
         [SerializeField] private ParticleSystem finishAnimation;
+        
+        private const float WinAnimationDelay = 5f;
+        
         private Rigidbody2D _character;
         private SpriteRenderer _spriteRenderer;
         private Vector2 _moveInput;
         private InputAction _moveAction;
         private Vector3 _playerPosition;
         private float _passedDistance;
+        private bool _targetReached;
 
         private void Awake()
         {
@@ -27,6 +33,9 @@ namespace Game.Player
 
         private void FixedUpdate()
         {
+            if (_targetReached)
+                return;
+            
             Vector2 moveValue = _moveAction.ReadValue<Vector2>();
             _character.linearVelocity = moveValue * moveSpeed;
             
@@ -45,14 +54,27 @@ namespace Game.Player
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.CompareTag("Finish"))
-                EventsMap.Dispatch(GameEvents.OnTargetReached);
+                ReachTarget();
         }
-        
-        public float GetPassedDistance() => _passedDistance;
 
-        public void PlayFinishAnimation()
+        private void ReachTarget()
+        {
+            _targetReached = true;
+            _character.linearVelocity = Vector2.zero;
+            EventsMap.Dispatch(GameEvents.OnTargetReached, _passedDistance);
+        }
+
+        public void PlayWinAnimation(Action onComplete)
+        {
+            StartCoroutine(WinAnimation(onComplete));
+        }
+
+        IEnumerator WinAnimation(Action onComplete)
         {
             finishAnimation.Play();
+            yield return new WaitForSeconds(WinAnimationDelay);
+            gameObject.SetActive(false);
+            onComplete.Invoke();
         }
     }
 }

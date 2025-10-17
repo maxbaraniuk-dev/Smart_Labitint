@@ -19,6 +19,7 @@ namespace Game
         private GameObject _gameBackground;
         private PlayerController _playerController;
         private bool _isGameStarted;
+        private bool _isTargetReached;
         
         private float _passedTime;
         private DifficultyLevel _difficultyLevel;
@@ -32,8 +33,8 @@ namespace Game
 
         public void StartNewGame(DifficultyLevel difficultyLevel)
         {
-            EventsMap.Subscribe(GameEvents.OnTargetReached, OnTargetReached);
-            
+            EventsMap.Subscribe<float>(GameEvents.OnTargetReached, OnTargetReached);
+            _isTargetReached = false;
             _passedTime = 0;
             _difficultyLevel = difficultyLevel;
             var mazeData = MazeGenerator.Generate(gameConfig.GetMazeData(difficultyLevel));
@@ -46,7 +47,7 @@ namespace Game
 
         public void ExitGame()
         {
-            EventsMap.Unsubscribe(GameEvents.OnTargetReached, OnTargetReached);
+            EventsMap.Unsubscribe<float>(GameEvents.OnTargetReached, OnTargetReached);
             _isGameStarted = false;
             Destroy(_maze);
             Destroy(_playerController.gameObject);
@@ -55,29 +56,31 @@ namespace Game
 
         private void Update()
         {
-            if (!_isGameStarted)
+            if (!_isGameStarted || _isTargetReached) 
                 return;
             
             _passedTime += Time.deltaTime;
             EventsMap.Dispatch(GameEvents.OnTimeUpdated, _passedTime);
         }
 
-        private void OnTargetReached()
+        private void OnTargetReached(float passedDistance)
         {
-            StartCoroutine(CompleteGame());
+            StartCoroutine(LevelCompleteFlow(passedDistance));
         }
 
-        IEnumerator CompleteGame()
+        private IEnumerator LevelCompleteFlow(float passedDistance)
         {
+            _isTargetReached = true;
+            var complete = false;
+            _playerController.PlayWinAnimation(()=> complete = true);
+            yield return new WaitWhile(() => !complete);
+            
             Context.GetSystem<IUISystem>().CloseView<GameUI>();
-            _playerController.PlayFinishAnimation();
-            yield return new WaitForSeconds(5);
-            _playerController.gameObject.SetActive(false);
             var levelResultData = new LevelResultData
             {
                 difficultyLevel = _difficultyLevel,
                 time = _passedTime,
-                distance = _playerController.GetPassedDistance()
+                distance = passedDistance
             };
             Context.GetSystem<ISaveSystem>().SaveCompletedLevel(levelResultData);
             Context.GetSystem<IUISystem>().ShowView<LevelCompleteDialog, LevelResultData>(levelResultData);
@@ -95,19 +98,13 @@ namespace Game
                 for (var x = 0; x < width; x++)
                 {
                     var cell = mazeData[x, y];
-                    GameObject prefab = null;
-                    switch (cell)
+                    GameObject prefab = cell switch
                     {
-                        case 0:
-                            prefab = wallPrefab;
-                            break;
-                        case 1:
-                            prefab = pathPrefab;
-                            break;
-                        case 2:
-                            prefab = exitPrefab;
-                            break;
-                    }
+                        0 => wallPrefab,
+                        1 => pathPrefab,
+                        2 => exitPrefab,
+                        _ => null
+                    };
 
                     if (prefab == null) continue;
                     var go = Instantiate(prefab, new Vector3(x, y, 0), Quaternion.identity, root.transform);
